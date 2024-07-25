@@ -2,11 +2,16 @@ package th.mfu;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -25,6 +30,16 @@ public class Customer {
 
     private String email;
 
+    @OneToMany(mappedBy = "customer", cascade=CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<SaleOrder> saleOrders;
+
+    public List<SaleOrder> getSaleOrders() {
+        return saleOrders;
+    }
+    public void setSaleOrders(List<SaleOrder> saleOrders) {
+        this.saleOrders = saleOrders;
+    }
     @JsonProperty("tel")
     private String phone;
 

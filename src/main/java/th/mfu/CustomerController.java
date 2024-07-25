@@ -42,6 +42,10 @@ public class CustomerController {
     // POST for creating a customer
     @PostMapping("/customers")
     public ResponseEntity<String> createCustomer(@RequestBody Customer customer){
+        if(!custRepo.findByName(customer.getName()).isEmpty()){
+            // Return conflict
+            return new ResponseEntity<String>("Customer already exits",HttpStatus.CONFLICT);
+        }
         custRepo.save(customer);
         return new ResponseEntity<String>("Customer created", HttpStatus.CREATED);
     }
